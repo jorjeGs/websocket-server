@@ -39,13 +39,13 @@ const handleJoinRoom = (ws, room) => {
   }
   rooms[room].add(ws);
   ws.room = room;
-  console.log(`Client joined room: ${room}`);
-  console.log(`Room has ${rooms[room].size} clients`);
+  //console.log(`Client joined room: ${room}`);
+  //console.log(`Room has ${rooms[room].size} clients`);
 
   // Send the current document state to the new user
   if (rooms[room].state) {
-    console.log('Sending state to new user');
-    ws.send(JSON.stringify({ type: 'init', message: Array.from(rooms[room].state) }));
+    console.log('Sending state to new user', rooms[room].state);
+    ws.send(JSON.stringify({ type: 'init', room, message: rooms[room].state }));
   }
 };
 
@@ -57,8 +57,8 @@ const handleSignal = (ws, data) => {
   }
 
   // Update the room state
-  rooms[room].state = new Uint8Array(data.message);
-  console.log('Room state updated', rooms[room].state);
+  rooms[room].state = data.message;
+  //console.log('Room state updated', rooms[room].state);
   
   rooms[room].forEach(client => {
     if (client !== ws && client.readyState === WebSocket.OPEN) {
