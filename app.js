@@ -51,6 +51,9 @@ const handleJoinRoom = (ws, room) => {
     room,
     message: 'Joined room'
   }));
+
+  console.log(`Client joined room: ${room}`);
+  console.log(`Room clients: ${rooms[room].clients.size}`);
 };
 
 const handleSignal = (ws, data) => {
